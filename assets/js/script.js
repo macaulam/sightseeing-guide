@@ -44,6 +44,7 @@ async function getCurrentLocationCallback(position) {
   }
 }
 
+// trigger google search when the search button is clicked
 function triggerGoogleSearch(event) {
   // console.log("hell");
   event.preventDefault();
@@ -66,13 +67,36 @@ function getGeolocationAtCurrentPosition(event) {
   }
 }
 
+// show the selected location on the map
+function showLocation(e) {
+  // get the latitude and longitude of select place
+  const lat = $(e.target).attr("data-lat");
+  const lng = $(e.target).attr("data-lng");
+
+  if (lat !== "" && lng !== "") {
+    const location = { lat: Number(lat), lng: Number(lng) };
+    // The map, centered at the selected location
+    const map = new google.maps.Map($("#map")[0], {
+      zoom: 15,
+      center: location
+    });
+    // The marker, positioned at the selected location
+    new google.maps.Marker({
+      position: location,
+      map: map
+    });
+  } else {
+    // TODO: show modal saying that the latitude and the longitude of the selected place can't be found
+  }
+}
+
 // initialise google map
-function initMap() {
+function googleMapScriptCallback() {
   initGoogleSearch();
 }
 
-// expose initMap function to google map script in HTML
-window.initMap = initMap;
+// expose googleMapScriptCallback function to google map script in HTML
+window.googleMapScriptCallback = googleMapScriptCallback;
 
 async function showNearbyPlaces(lat, lng) {
   if (lat !== null && lat !== undefined && lng !== null && lng !== undefined) {
@@ -103,6 +127,3 @@ async function showNearbyPlaces(lat, lng) {
 //--------------------------------------------------------  Event Liteners  --------------------------------------------------------//
 $("#get-current-location-btn").on("click", getGeolocationAtCurrentPosition);
 $("#search-btn").on("click", triggerGoogleSearch);
-
-// <!-- jQuery -->
-// <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
