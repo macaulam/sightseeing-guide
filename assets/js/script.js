@@ -4,7 +4,7 @@ function initGoogleSearch() {
   const inputEl = $("#place-search")[0];
   const searchBox = new google.maps.places.SearchBox(inputEl);
 
-  searchBox.addListener("places_changed", () => {
+  searchBox.addListener("places_changed", async () => {
     const places = searchBox.getPlaces();
     console.log("places: ", places);
 
@@ -19,11 +19,7 @@ function initGoogleSearch() {
         const lat = placesHasGeometry[0].geometry.location.lat();
         const lng = placesHasGeometry[0].geometry.location.lng();
 
-        console.log("lat: ", lat);
-        console.log("lng: ", lng);
-
-        // TODO: call wikipedia api get get nearby places
-        console.log("get nearby places from wikipedia.......");
+        await showNearbyPlaces(lat, lng);
       } else {
         console.log("the places don't have geometry, try again!");
         // TODO: show a modal saying that the places don't have geometry, try again!
@@ -38,15 +34,10 @@ function initGoogleSearch() {
 // get the user current location
 async function getCurrentLocationCallback(position) {
   if (position) {
-    console.log("position: ", position);
     const lat = position.coords.latitude;
-    const lon = position.coords.longitude;
+    const lng = position.coords.longitude;
 
-    console.log("lat: ", lat);
-    console.log("lon: ", lon);
-
-    // TODO: call wikipedia api get get nearby places
-    console.log("get nearby places from wikipedia.......");
+    await showNearbyPlaces(lat, lng);
   } else {
     // TODO: show a modal saying that your current position can't be found, try again!
     console.log("your current position can't be found, try again!");
@@ -83,6 +74,35 @@ function initMap() {
 // expose initMap function to google map script in HTML
 window.initMap = initMap;
 
+async function showNearbyPlaces(lat, lng) {
+  if (lat !== null && lat !== undefined && lng !== null && lng !== undefined) {
+    // get nearby locations from wiki
+    const nearbyLocationsResp = await $.ajax({
+      method: "GET",
+      url: `https://en.wikipedia.org/w/api.php?origin=*&action=query&prop=coordinates|pageimages|description|info&inprop=url&pithumbsize=144&generator=geosearch&ggsradius=10000&ggslimit=10&ggscoord=${lat}|${lng}&format=json`
+    });
+
+    if (
+      nearbyLocationsResp &&
+      nearbyLocationsResp.query &&
+      nearbyLocationsResp.query.pages &&
+      !$.isEmptyObject(nearbyLocationsResp.query.pages)
+    ) {
+      const pages = nearbyLocationsResp.query.pages;
+
+      console.log("pages: ", pages);
+      // TODO: show items on the left panel
+    } else {
+      // TODO: show model saying that no nearby places found!
+    }
+  } else {
+    // TODO: show a modal saying that the lat and lng of the place can't be found, try again!
+  }
+}
+
 //--------------------------------------------------------  Event Liteners  --------------------------------------------------------//
 $("#get-current-location-btn").on("click", getGeolocationAtCurrentPosition);
 $("#search-btn").on("click", triggerGoogleSearch);
+
+// <!-- jQuery -->
+// <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
