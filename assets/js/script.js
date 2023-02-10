@@ -21,12 +21,16 @@ function initGoogleSearch() {
 
         await showNearbyPlaces(lat, lng);
       } else {
-        console.log("the places don't have geometry, try again!");
-        // TODO: show a modal saying that the places don't have geometry, try again!
+        showModal(
+          "No Places Found",
+          "No nearby places can't be found. Please try again!"
+        );
       }
     } else {
-      // TODO: show a modal saying that the places isn't found!
-      console.log("the places isn't found!");
+      showModal(
+        "No Places Found",
+        "No nearby places can't be found. Please try again!"
+      );
     }
   });
 }
@@ -39,14 +43,23 @@ async function getCurrentLocationCallback(position) {
 
     await showNearbyPlaces(lat, lng);
   } else {
-    // TODO: show a modal saying that your current position can't be found, try again!
-    console.log("your current position can't be found, try again!");
+    showModal(
+      "Can't Locate You",
+      "Your current position can't be retrieved. Please try again!"
+    );
   }
+}
+
+// tell user that you've already rejected the permission to get your current location
+function currentLocationRejectCallback() {
+  showModal(
+    "Geolocation Denied",
+    "You need to enable Geolocation on your brwoser."
+  );
 }
 
 // trigger google search when the search button is clicked
 function triggerGoogleSearch(event) {
-  // console.log("hell");
   event.preventDefault();
 
   const inputEl = $("#place-search")[0];
@@ -60,18 +73,23 @@ function getGeolocationAtCurrentPosition(event) {
   event.preventDefault();
 
   if (window.navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(getCurrentLocationCallback);
+    navigator.geolocation.getCurrentPosition(
+      getCurrentLocationCallback,
+      currentLocationRejectCallback
+    );
   } else {
-    // TODO: show a modal saying Geolocation isn't supported in this browser
-    console.log("Geolocation isn't supported in this browser");
+    showModal(
+      "Unavailable Geolocation",
+      "Geolocation isn't supported in this browser"
+    );
   }
 }
 
 // show the selected location on the map
-function showLocation(e) {
+function showLocation(event) {
   // get the latitude and longitude of select place
-  const lat = $(e.target).attr("data-lat");
-  const lng = $(e.target).attr("data-lng");
+  const lat = $(event.target).attr("data-lat");
+  const lng = $(event.target).attr("data-lng");
 
   if (lat !== "" && lng !== "") {
     const location = { lat: Number(lat), lng: Number(lng) };
@@ -86,7 +104,10 @@ function showLocation(e) {
       map: map
     });
   } else {
-    // TODO: show modal saying that the latitude and the longitude of the selected place can't be found
+    showModal(
+      "Couldn't show this place",
+      "The latitude and the longitude of the selected place can't be found. Please try again!"
+    );
   }
 }
 
@@ -115,39 +136,51 @@ async function showNearbyPlaces(lat, lng) {
       const pages = nearbyLocationsResp.query.pages;
 
       console.log("pages: ", pages);
-    // create an array to hold the html for each nearby place
-  let nearbyPlacesHTML = [];
+      // create an array to hold the html for each nearby place
+      let nearbyPlacesHTML = [];
 
-  // loop through the nearby locations and create the HTML for each one
-  for (const key in pages) {
-    if (pages.hasOwnProperty(key)) {
-      const place = pages[key];
-      nearbyPlacesHTML.push(`
-        <div class="nearby-item" data-lat="${place.coordinates[0].lat}" data-lng="${place.coordinates[0].lon}">
-        <img src="${place.thumbnail&&place.thumbnail.source?place.thumbnail.source:''}" />     
+      // loop through the nearby locations and create the HTML for each one
+      for (const key in pages) {
+        if (pages.hasOwnProperty(key)) {
+          const place = pages[key];
+          nearbyPlacesHTML.push(`
+        <div class="nearby-item" data-lat="${
+          place.coordinates[0].lat
+        }" data-lng="${place.coordinates[0].lon}">
+        <img src="${
+          place.thumbnail && place.thumbnail.source
+            ? place.thumbnail.source
+            : ""
+        }" />     
         <h3 class="nearby-item-title">${place.title}</h3>
           <p class="nearby-item-description">${place.description || ""}</p>
         </div>
       `);
+        }
+      }
+
+      // join the array of HTML into a single string
+      const nearbyPlacesHTMLString = nearbyPlacesHTML.join("");
+
+      // add the HTML string to the nearby-section div
+      $("#nearby-section").html(nearbyPlacesHTMLString);
+    } else {
+      $("#nearby-section").html("<p>No nearby places found!</p>");
     }
-  }
-
-  // join the array of HTML into a single string
-  const nearbyPlacesHTMLString = nearbyPlacesHTML.join("");
-
-  // add the HTML string to the nearby-section div
-  $("#nearby-section").html(nearbyPlacesHTMLString);
-
-} else {
-  $("#nearby-section").html("<p>No nearby places found!</p>");
-}
   } else {
-    // TODO: show a modal saying that the lat and lng of the place can't be found, try again!
-    alert("The latitude and longitude of the place could not be found, please try again!");
+    showModal(
+      "Couldn't find this place",
+      "The latitude and the longitude of the place can't be found. Please try again!"
+    );
   }
 }
-    // Add the newly created element to the DOM
-    $("#nearby-section").append;
+
+function showModal(title, body) {
+  $("#app-modal-title").text(title);
+  $("#app-modal-body").text(body);
+  $("#app-modal").modal("show");
+}
+
 //--------------------------------------------------------  Event Liteners  --------------------------------------------------------//
 $("#get-current-location-btn").on("click", getGeolocationAtCurrentPosition);
 $("#search-btn").on("click", triggerGoogleSearch);
