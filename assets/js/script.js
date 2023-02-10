@@ -100,9 +100,9 @@ async function showNearbyPlaces(lat, lng) {
       const place = pages[key];
       nearbyPlacesHTML.push(`
         <div class="nearby-item" data-lat="${place.coordinates[0].lat}" data-lng="${place.coordinates[0].lon}">
-          <h3 class="nearby-item-title">${place.title}</h3>
+        <img src="${place.thumbnail&&place.thumbnail.source?place.thumbnail.source:''}" />     
+        <h3 class="nearby-item-title">${place.title}</h3>
           <p class="nearby-item-description">${place.description || ""}</p>
-          <a class="nearby-item-link" href="${place.fullurl}" target="_blank">More info</a>
         </div>
       `);
     }
