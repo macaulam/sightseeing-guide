@@ -123,7 +123,7 @@ async function showNearbyPlaces(lat, lng) {
   }
 }
     // Add the newly created element to the DOM
-    $("#nearby-section").append($articleList);
+    $("#nearby-section").append;
 //--------------------------------------------------------  Event Liteners  --------------------------------------------------------//
 $("#get-current-location-btn").on("click", getGeolocationAtCurrentPosition);
 $("#search-btn").on("click", triggerGoogleSearch);
