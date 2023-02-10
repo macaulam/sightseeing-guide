@@ -91,15 +91,39 @@ async function showNearbyPlaces(lat, lng) {
       const pages = nearbyLocationsResp.query.pages;
 
       console.log("pages: ", pages);
-      // TODO: show items on the left panel
-    } else {
-      // TODO: show model saying that no nearby places found!
+    // create an array to hold the html for each nearby place
+  let nearbyPlacesHTML = [];
+
+  // loop through the nearby locations and create the HTML for each one
+  for (const key in pages) {
+    if (pages.hasOwnProperty(key)) {
+      const place = pages[key];
+      nearbyPlacesHTML.push(`
+        <div class="nearby-item" data-lat="${place.coordinates[0].lat}" data-lng="${place.coordinates[0].lon}">
+          <h3 class="nearby-item-title">${place.title}</h3>
+          <p class="nearby-item-description">${place.description || ""}</p>
+          <a class="nearby-item-link" href="${place.fullurl}" target="_blank">More info</a>
+        </div>
+      `);
     }
+  }
+
+  // join the array of HTML into a single string
+  const nearbyPlacesHTMLString = nearbyPlacesHTML.join("");
+
+  // add the HTML string to the nearby-section div
+  $("#nearby-section").html(nearbyPlacesHTMLString);
+
+} else {
+  $("#nearby-section").html("<p>No nearby places found!</p>");
+}
   } else {
     // TODO: show a modal saying that the lat and lng of the place can't be found, try again!
+    alert("The latitude and longitude of the place could not be found, please try again!");
   }
 }
-
+    // Add the newly created element to the DOM
+    $("#nearby-section").append($articleList);
 //--------------------------------------------------------  Event Liteners  --------------------------------------------------------//
 $("#get-current-location-btn").on("click", getGeolocationAtCurrentPosition);
 $("#search-btn").on("click", triggerGoogleSearch);
