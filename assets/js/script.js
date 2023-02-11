@@ -1,3 +1,9 @@
+// store places in local storage using this key
+const APP_ID = "sightseeing-guide";
+// store wikipedia pages in order to find the match of the clicked item
+// and store the item in local storage
+let wikipediaPages = null;
+
 //--------------------------------------------------------  Functions  --------------------------------------------------------//
 // bind input field to google search and listen to changes
 function initGoogleSearch() {
@@ -6,7 +12,6 @@ function initGoogleSearch() {
 
   searchBox.addListener("places_changed", async () => {
     const places = searchBox.getPlaces();
-    console.log("places: ", places);
 
     if (places && places.length > 0) {
       // get the places that has geometry from the result
@@ -86,10 +91,10 @@ function getGeolocationAtCurrentPosition(event) {
 }
 
 // show the selected location on the map
-function showLocation(event) {
+function showLocation(el) {
   // get the latitude and longitude of select place
-  const lat = $(event.target).attr("data-lat");
-  const lng = $(event.target).attr("data-lng");
+  const lat = $(el).attr("data-lat");
+  const lng = $(el).attr("data-lng");
 
   if (lat !== "" && lng !== "") {
     const location = { lat: Number(lat), lng: Number(lng) };
@@ -104,6 +109,7 @@ function showLocation(event) {
       map: map
     });
   } else {
+    $("#map").html("<p>This place can't be located in the map.</p>");
     showModal(
       "Couldn't show this place",
       "The latitude and the longitude of the selected place can't be found. Please try again!"
@@ -119,6 +125,76 @@ function googleMapScriptCallback() {
 // expose googleMapScriptCallback function to google map script in HTML
 window.googleMapScriptCallback = googleMapScriptCallback;
 
+// get data from localStorage
+function getLocalStorage() {
+  return JSON.parse(
+    JSON.stringify(
+      localStorage.getItem(APP_ID)
+        ? JSON.parse(localStorage.getItem(APP_ID))
+        : []
+    )
+  );
+}
+
+// store nearby place in local storage
+function storeNearbyPlace(place) {
+  // get local storage, if it's null then create a new object
+  let storageArr = getLocalStorage();
+
+  const placeIndex = storageArr.findIndex(
+    (item) => item.pageid === place.pageid
+  );
+
+  if (placeIndex < 0) {
+    // store the place as the first item
+    storageArr.unshift(place);
+  } else if (placeIndex > 0) {
+    // if the item exists, bring it to the front of the array
+    storageArr.unshift(storageArr.splice(placeIndex, 1)[0]);
+  }
+
+  // only storage 10 places in local storage
+  if (storageArr.length > 10) {
+    storageArr.splice(10);
+  }
+  // save an event into local storage
+  localStorage.setItem(APP_ID, JSON.stringify(storageArr));
+}
+
+// show places to the DOM from local storage
+function showLocalStorageHistory() {
+  // clear histroy in the DOM
+  $("#recent-search").empty();
+  // get local storage, if it's null then create a new object
+  let storageArr = getLocalStorage();
+
+  if (storageArr && storageArr.length > 0) {
+    storageArr.forEach((place) => {
+      const placeEl = $(`
+        <div class="history-item" 
+             data-id="${place.pageid}" 
+             data-lat="${place.coordinates[0].lat}" 
+             data-lng="${place.coordinates[0].lon}"
+             data-url="${place.fullurl}">
+             <img class="history-item__img" 
+                  src="${
+                    place.thumbnail && place.thumbnail.source
+                      ? place.thumbnail.source
+                      : ""
+                  }" /> 
+            <p class="history-item__title">${place.title}</p>
+        </div>
+      `);
+      $("#recent-search").append(placeEl);
+    });
+  } else {
+    $("#recent-search").html(
+      "<p>You haven't look at any places in recent.</p>"
+    );
+  }
+}
+
+// fetch nearby places using wikipedia api
 async function showNearbyPlaces(lat, lng) {
   if (lat !== null && lat !== undefined && lng !== null && lng !== undefined) {
     // get nearby locations from wiki
@@ -133,20 +209,22 @@ async function showNearbyPlaces(lat, lng) {
       nearbyLocationsResp.query.pages &&
       !$.isEmptyObject(nearbyLocationsResp.query.pages)
     ) {
-      const pages = nearbyLocationsResp.query.pages;
-
-      console.log("pages: ", pages);
+      $("#nearby-section").empty();
+      wikipediaPages = nearbyLocationsResp.query.pages;
       // create an array to hold the html for each nearby place
       let nearbyPlacesHTML = [];
 
       // loop through the nearby locations and create the HTML for each one
-      for (const key in pages) {
-        if (pages.hasOwnProperty(key)) {
-          const place = pages[key];
+      for (const key in wikipediaPages) {
+        if (wikipediaPages.hasOwnProperty(key)) {
+          const place = wikipediaPages[key];
           nearbyPlacesHTML.push(`
-        <div class="nearby-item" data-lat="${
-          place.coordinates[0].lat
-        }" data-lng="${place.coordinates[0].lon}">
+        <div class="nearby-item" 
+        data-id="${key}"
+        data-lat="${place.coordinates[0].lat}" data-lng="${
+            place.coordinates[0].lon
+          }"
+        data-url="${place.fullurl}">
         <img src="${
           place.thumbnail && place.thumbnail.source
             ? place.thumbnail.source
@@ -168,6 +246,7 @@ async function showNearbyPlaces(lat, lng) {
       $("#nearby-section").html("<p>No nearby places found!</p>");
     }
   } else {
+    $("#nearby-section").html("<p>No nearby places found!</p>");
     showModal(
       "Couldn't find this place",
       "The latitude and the longitude of the place can't be found. Please try again!"
@@ -175,12 +254,60 @@ async function showNearbyPlaces(lat, lng) {
   }
 }
 
+// show wikipedia page and map of the item and store it in local storage
+function placeOnClick(placeToFind, event) {
+  // show wikipedia of the clicked item in iframe
+  const url = $(event.currentTarget).attr("data-url");
+  const infoHtml = url
+    ? `<iframe src="${url}">`
+    : "<p>Can't find the Wikipedia about this place</p>";
+  $("#info").html(infoHtml);
+
+  // show location of the clicked item in google map
+  showLocation(event.currentTarget);
+
+  // store item in local storage
+  if (placeToFind === "wikipediaPages") {
+    const place = wikipediaPages[$(event.currentTarget).attr("data-id")];
+    place ? storeNearbyPlace(place) : null;
+  } else {
+    // localStorage
+    const place = getLocalStorage().find(
+      (item) => item.pageid === $(event.currentTarget).attr("data-id")
+    );
+    place ? storeNearbyPlace(place) : null;
+  }
+
+  // update history in the DOM
+  showLocalStorageHistory();
+}
+
+// modal to show user if things go wrong
 function showModal(title, body) {
   $("#app-modal-title").text(title);
   $("#app-modal-body").text(body);
   $("#app-modal").modal("show");
 }
 
+// function to run when application is loaded
+function start() {
+  // show stored places in the DOM
+  showLocalStorageHistory();
+}
+
 //--------------------------------------------------------  Event Liteners  --------------------------------------------------------//
 $("#get-current-location-btn").on("click", getGeolocationAtCurrentPosition);
 $("#search-btn").on("click", triggerGoogleSearch);
+$("#nearby-section").on(
+  "click",
+  ".nearby-item",
+  placeOnClick.bind(this, "wikipediaPages")
+);
+$("#recent-search").on(
+  "click",
+  ".history-item",
+  placeOnClick.bind(this, "localStorage")
+);
+
+//--------------------------------------------------------  Application Start  --------------------------------------------------------//
+start();
