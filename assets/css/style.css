@@ -1,12 +1,9 @@
+/* these attributes are used for entire css as default values*/
 * {
   margin: 0;
   padding: 0;
 }
-
-.body {
-  max-width: 1440px;
-}
-
+/* navbar attributes*/
 .nav {
     display: flex;
     justify-content: space-between;
@@ -18,9 +15,8 @@
 
 .jumbotron {
   background-size: cover;
-  color: var(--color-text);
   text-align: center;
-  background-color: beige;
+  background-color: rgba(219, 214, 214, 0.8);
   }
 
   .jumbotron h1 {
@@ -28,57 +24,62 @@
     color: black;
   }
 
-  .container {
-    margin-top: 2rem;
-    margin-bottom: 2rem;
-    height: 50%;
-  }
+  /*This is used to split the parent container into 2 equal containers*/
+.container {
+  width: 100%;
+  height: 50%;
+}
 
+.container-my-8{
+  margin: 0;
+}
+
+/*This is to set up the row attributes*/
   .row {
+    gap: 10px;
+    height: 600px;
     display: flex;
-    justify-content:space-between;
-    width: 100%;
-    height: 50rem;
-    gap :10px;
+    flex-wrap: nowrap;
+  }
+  
+  /*Design of columns for medium screens*/
+  .col-md-3 {
+  float: left;
+  width: 100%;
+  background-color: rgba(219, 214, 214, 0.8);
+  margin: auto;
   }
 
-  .col-sm {
-    background-color: lightgray;
-    padding: 2rem;
-    text-align: center;
-    width: 30%;
+/*Design of columns for medium screens*/
+  .col-md-9  {
     float: left;
-
+    width: 100%;
+    background-color: rgba(219, 214, 214, 0.8);
+    margin: auto;
   }
 
-  .col-lg  {
-    background-color: aqua;
-    width: 70%;
-    padding: 2rem;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    
-  }
+.col-sm-12 {
+  margin:10px 0;
+}
+  
+.container-search{
+  float: left;
+    width: 100%;
+    background-color: rgba(219, 214, 214, 0.8);
+    margin: auto;
+}
 
+  /*footer */
   .footer {
-    background-color: lightgray;
-    color: white;
+    background-color: rgba(219, 214, 214, 0.8);
     padding: 1rem;
     text-align: center;
-    
+    width: 100%;
   }
 
   .btn-primary {
 background-color: rgb(29, 86, 192);
   }
-
- 
-
-.footer {
-  background-color: rgb(139, 99, 45);
-  padding: 2rem;
-}
 
 .form-inline {
   width: auto;
@@ -99,10 +100,22 @@ background-color: rgb(29, 86, 192);
   text-decoration:underline;
 }
 
-.div.container {
-  width: 100%;
-}
 
 .h3 {
   size: 20px;
+}
+
+/* This media query is used for smaller screen*/
+@media (max-width: 767px) {
+  .row {
+    width: 100%;
+    float: none;
+    display: block;
+    margin: 20px 0;
+  }
+}
+
+/*image for background*/
+body {
+  background: url('/assets/img/background\ PROJECT.jpg') no-repeat center/cover;
 }
