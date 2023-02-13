@@ -30,9 +30,7 @@
   height: 50%;
 }
 
-.container-my-8{
-  margin: 0;
-}
+
 
 /*This is to set up the row attributes*/
   .row {
@@ -40,6 +38,7 @@
     height: 600px;
     display: flex;
     flex-wrap: nowrap;
+    overflow: auto;
   }
   
   /*Design of columns for medium screens*/
@@ -48,33 +47,55 @@
   width: 100%;
   background-color: rgba(219, 214, 214, 0.8);
   margin: auto;
+  overflow: auto;
   }
 
 /*Design of columns for medium screens*/
   .col-md-9  {
+    overflow: auto;
     float: left;
     width: 100%;
     background-color: rgba(219, 214, 214, 0.8);
     margin: auto;
+    overflow: auto;
   }
 
 .col-sm-12 {
   margin:10px 0;
 }
-  
+
+#document {
+  width: 100%;
+  height: 100%;
+}
+
+/*This is used to set the attributes for the search container */
 .container-search{
-  float: left;
     width: 100%;
     background-color: rgba(219, 214, 214, 0.8);
-    margin: auto;
+    margin: auto; 
+}
+/*This is used to diplay correctly within the container-search */
+#recent-search {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  height: 100%;
+  align-items: center;
+  gap: 10px;
 }
 
   /*footer */
-  .footer {
-    background-color: rgba(219, 214, 214, 0.8);
+  .bg-light.py-3 {
+    background-color: rgb(235, 198, 198, 0.8) !important;
     padding: 1rem;
     text-align: center;
     width: 100%;
+  }
+/*This is for the text inside footer container*/
+  .container.text-center {
+    text-decoration:underline;
+    font-size: larger;
   }
 
   .btn-primary {
@@ -97,7 +118,7 @@ background-color: rgb(29, 86, 192);
 }
 
 .display-4 {
-  text-decoration:underline;
+  text-decoration: solid;
 }
 
 
@@ -112,10 +133,22 @@ background-color: rgb(29, 86, 192);
     float: none;
     display: block;
     margin: 20px 0;
+    align-items: center;
   }
 }
 
 /*image for background*/
 body {
   background: url('/assets/img/background\ PROJECT.jpg') no-repeat center/cover;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.nearby-item {
+overflow: auto;
 }
