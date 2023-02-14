@@ -9,7 +9,8 @@ With this application I should be able to search for information using either my
 By using this application, I'll be able to plan my day more effectively and make the most of my time exploring the area.
 
 <img src="/assets/img/wireframe/Wireframe 1.png" alt="Alt text" title="Optional title">
-
+Initial Wireframe Design
 <img src="/assets/img/wireframe/Wireframe 2.png" alt="Alt text" title="Optional title">
-
+Initial Wireframe Design
 <img src="/assets/img/wireframe/Wireframe 3.png" alt="Alt text" title="Optional title">
+Initial Wireframe Design
