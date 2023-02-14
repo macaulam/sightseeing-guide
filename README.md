@@ -12,4 +12,4 @@ By using this application, I'll be able to plan my day more effectively and make
 
 <img src="/assets/img/wireframe/Wireframe 2.png" alt="Alt text" title="Optional title">
 
-<img src=/assets/img/wireframe/Wireframe 3".png" alt="Alt text" title="Optional title">
+<img src="/assets/img/wireframe/Wireframe 3".png" alt="Alt text" title="Optional title">
