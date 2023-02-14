@@ -171,25 +171,27 @@ function showLocalStorageHistory() {
   if (storageArr && storageArr.length > 0) {
     storageArr.forEach((place) => {
       const placeEl = $(`
-        <div class="history-item" 
-             data-id="${place.pageid}" 
-             data-lat="${place.coordinates[0].lat}" 
+        <div class="card history-item" 
+             data-id="${place.pageid}"
+             data-lat="${place.coordinates[0].lat}"
              data-lng="${place.coordinates[0].lon}"
-             data-url="${place.fullurl}">
-             <img class="history-item__img" 
-                  src="${
-                    place.thumbnail && place.thumbnail.source
-                      ? place.thumbnail.source
-                      : ""
-                  }" /> 
-            <p class="history-item__title">${place.title}</p>
+             data-url="${place.fullurl}"
+        >
+          <img class="card-img-top history-item__img" src="${
+            place.thumbnail && place.thumbnail.source
+              ? place.thumbnail.source
+              : "./assets/img/application/image_not_available.png"
+          }" alt="${place.title}">
+          <div class="card-body">
+            <h5 class="card-title">${place.title}</h5>
+          </div>
         </div>
       `);
       $("#recent-search").append(placeEl);
     });
   } else {
     $("#recent-search").html(
-      "<p>You haven't look at any places in recent.</p>"
+      "<h4 class='mt-2'>You haven't look at any places in recent.</h4>"
     );
   }
 }
@@ -212,26 +214,30 @@ async function showNearbyPlaces(lat, lng) {
       $("#nearby-section").empty();
       wikipediaPages = nearbyLocationsResp.query.pages;
       // create an array to hold the html for each nearby place
-      let nearbyPlacesHTML = [];
+      let nearbyPlacesHTML = [
+        '<h3 class="nearby-places-header">View Nearby Places</h3>'
+      ];
 
       // loop through the nearby locations and create the HTML for each one
       for (const key in wikipediaPages) {
         if (wikipediaPages.hasOwnProperty(key)) {
           const place = wikipediaPages[key];
           nearbyPlacesHTML.push(`
-        <div class="nearby-item" 
-        data-id="${key}"
-        data-lat="${place.coordinates[0].lat}" data-lng="${
-            place.coordinates[0].lon
-          }"
-        data-url="${place.fullurl}">
-        <img src="${
-          place.thumbnail && place.thumbnail.source
-            ? place.thumbnail.source
-            : ""
-        }" />     
-        <h3 class="nearby-item-title">${place.title}</h3>
-          <p class="nearby-item-description">${place.description || ""}</p>
+        <div class="card nearby-item" 
+             data-id="${key}"
+             data-lat="${place.coordinates[0].lat}"
+             data-lng="${place.coordinates[0].lon}"
+             data-url="${place.fullurl}"
+        >
+          <img class="card-img-top nearby-item__img" src="${
+            place.thumbnail && place.thumbnail.source
+              ? place.thumbnail.source
+              : "./assets/img/application/image_not_available.png"
+          }" alt="${place.title}">
+          <div class="card-body">
+            <h5 class="card-title">${place.title}</h5>
+            <p class="card-text">${place.description || ""}</p>
+          </div>
         </div>
       `);
         }
@@ -259,7 +265,7 @@ function placeOnClick(placeToFind, event) {
   // show wikipedia of the clicked item in iframe
   const url = $(event.currentTarget).attr("data-url");
   const infoHtml = url
-    ? `<iframe class="wiki" src="${url}">`
+    ? `<iframe class="w-100 h-100" src="${url}">`
     : "<p>Can't find the Wikipedia about this place</p>";
   $("#info").html(infoHtml);
 
