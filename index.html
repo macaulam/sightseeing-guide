@@ -1,125 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <!-- Bootstrap coreCSS -->
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-      crossorigin="anonymous"
-    />
-    <!-- Bootstrap template CSS -->
-    <link rel="stylesheet" href="assets/css/style.css" />
-    <title>Sightseeing Guide</title>
-  </head>
 
-  <body>
-    <div class="jumbotron text-center">
-      <h1 class="display-4">Sightseeing Guide</h1>
-      <p class="lead"></p>
-    </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible"
+        content="ie=edge" />
+  <!-- Bootstrap coreCSS -->
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous" />
+  <!-- Bootstrap template CSS -->
+  <link rel="stylesheet"
+        href="assets/css/style.css" />
+  <title>Sightseeing Guide</title>
+</head>
+
+
+<body>
+  <header>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <button id="get-current-location-btn" class="btn btn-primary">
-        Get nearby places around me
+      <div class="navbar-brand sightseeing-brand">Sightseeing Guide</div>
+      <button class="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="form-inline">
-        <input
-          id="place-search"
-          type="text"
-          class="form-control"
-          placeholder="Search"
-        />
-        <button id="search-btn" class="btn btn-primary ml-3">Search</button>
+
+      <div class="collapse navbar-collapse"
+           id="navbarSupportedContent">
+        <form class="form-inline my-2 my-lg-0 header-search">
+          <button id="get-current-location-btn"
+                  class="btn btn-primary">
+            Get nearby places around me
+          </button>
+          <input id="place-search"
+                 class="form-control mr-sm-2"
+                 type="search"
+                 placeholder="Search a place"
+                 aria-label="Search">
+          <button id="search-btn"
+                  class="btn btn-outline-success my-2 my-sm-0"
+                  type="submit">Search</button>
+        </form>
       </div>
     </nav>
-    <div class="container my-8">
+  </header>
+
+  <main>
+    <section class="container-fluid h-100 main-section">
+      <div class="row places-row">
+        <div id="nearby-section"
+             class="col-12 col-md-4 col-lg-3">
+          <h4 class="mt-2">No nearby places found!</h4>
+        </div>
+
+        <div id="info-and-map"
+             class="col-12 col-md-8 col-lg-9">
+          <div id="info">
+            <h4 class="mt-2">Select a place to get more information.</h4>
+          </div>
+          <div id="map">
+            <h4 class="mt-2">Select a place to find out where it is.</h4>
+          </div>
+        </div>
+      </div>
+
       <div class="row">
-        <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3" id="nearby-section">
-          <p>No nearby places found!</p>
-        </div>
-
-        <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9">
-          <div id="info" class="container">
+        <div class="col-12">
+          <h1>Recent searches</h1>
+          <div id="recent-search">
             <!-- Container 1 -->
-            <p>Select a place to get more information.</p>
-          </div>
-          <div id="map" class="container">
-            <!-- Container 2 -->
-            <p>Select a place to find out where it is.</p>
+            <h4 class="mt-2">You haven't look at any places in recent.</h4>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="container-search">
-      <h1>Recent searches</h1>
-      <div id="recent-search">
-        <!-- Container 1 -->
-        <p>You haven't look at any places in recent.</p>
-      </div>
-    </div>
-
-    <!-- Vertically centered modal -->
-    <div
-      class="modal fade"
-      id="app-modal"
-      data-backdrop="static"
-      data-keyboard="false"
-      tabindex="-1"
-      aria-labelledby="staticBackdropLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="app-modal-title">Modal title</h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div id="app-modal-body" class="modal-body"></div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-dismiss="modal"
-            >
-              Close
-            </button>
+      <!-- Vertically centered modal -->
+      <div class="modal fade"
+           id="app-modal"
+           data-backdrop="static"
+           data-keyboard="false"
+           tabindex="-1"
+           aria-labelledby="staticBackdropLabel"
+           aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title"
+                  id="app-modal-title">Modal title</h5>
+              <button type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div id="app-modal-body"
+                 class="modal-body"></div>
+            <div class="modal-footer">
+              <button type="button"
+                      class="btn btn-secondary"
+                      data-dismiss="modal">
+                Close
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-
-    <footer class="bg-light py-3">
-      <div class="container text-center">
-        <p>Copyright A-TEAM 2023</p>
-      </div>
-    </footer>
+    </section>
 
     <!-- jQuery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <!-- Pollyfill -->
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <!-- Bootstrap -->
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-      integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+            crossorigin="anonymous"></script>
     <!-- Google Map -->
-    <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVp1P7tKo6WhPBv88BsY63k-54XU0zdoo&callback=googleMapScriptCallback&libraries=places&v=weekly"
-      defer
-    ></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVp1P7tKo6WhPBv88BsY63k-54XU0zdoo&callback=googleMapScriptCallback&libraries=places&v=weekly"
+            defer></script>
     <script src="./assets/js/script.js"></script>
-  </body>
+  </main>
+
+  <footer class="bg-light py-3">
+    <div class="container text-center">
+      <p>Copyright A-TEAM 2023</p>
+    </div>
+  </footer>
+
+
+</body>
+
+
 </html>

@@ -3,163 +3,121 @@
   margin: 0;
   padding: 0;
 }
-/* navbar attributes*/
-.nav {
-    display: flex;
-    justify-content: space-between;
-    padding: 1rem;
-    text-decoration: none;
-    width: 100%;
-    gap: 10px;
-  }
 
-.jumbotron {
-  background-size: cover;
-  text-align: center;
-  background-color: rgba(219, 214, 214, 0.8);
-  }
-
-  .jumbotron h1 {
-    font-size: 2rem;
-    color: black;
-  }
-
-  /*This is used to split the parent container into 2 equal containers*/
-.container {
-  width: 100%;
-  height: 50%;
+/*set body to occupy the device view port height and use flexbox*/
+body {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
+/*expend the main section vertically to take the full height*/
+main {
+  flex: 1 1 auto;
+  display: flex;
+  flex-flow: column nowrap;
 
-/*This is to set up the row attributes*/
-  .row {
-    gap: 10px;
-    height: 600px;
-    display: flex;
-    flex-wrap: nowrap;
-    overflow: auto;
-  }
-  
-  /*Design of columns for medium screens*/
-  .col-md-3 {
-  float: left;
-  width: 100%;
-  background-color: rgba(219, 214, 214, 0.8);
-  margin: auto;
-  overflow: auto;
-  }
-
-/*Design of columns for medium screens*/
-  .col-md-9  {
-    overflow: auto;
-    float: left;
-    width: 100%;
-    background-color: rgba(219, 214, 214, 0.8);
-    margin: auto;
-    overflow: auto;
-  }
-
-.col-sm-12 {
-  margin:10px 0;
+  /* background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+    url("../img/application/background.jpg");
+  background-position: center top; */
 }
 
-#document {
-  width: 100%;
+/* use cursize font family for the application name */
+.sightseeing-brand {
+  font-family: cursive, sans-serif;
+  font-weight: bold;
+}
+
+.main-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.places-row {
+  flex: 1;
+  overflow: scroll;
+}
+
+/*use flex and apply 10px gap between buttons and input in the search bar*/
+.header-search {
+  gap: 10px;
+  flex: 1 1 auto;
+  justify-content: center !important;
+}
+
+/* expand the search input to its maximum*/
+#place-search {
+  flex: 1 1 auto;
   height: 100%;
 }
 
-/*This is used to set the attributes for the search container */
-.container-search{
-    width: 100%;
-    background-color: rgba(219, 214, 214, 0.8);
-    margin: auto; 
-}
-/*This is used to diplay correctly within the container-search */
+/* show history places horizontally and make them scrollable */
 #recent-search {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-  white-space: nowrap;
-  overflow-x: scroll;
+  overflow: scroll;
+  gap: 5px;
+  padding: 0 0 5px 0;
 }
 
-  /*footer */
-  .bg-light.py-3 {
-    background-color: rgb(235, 198, 198, 0.8) !important;
-    padding: 1rem;
-    text-align: center;
-    width: 100%;
-  }
-/*This is for the text inside footer container*/
-  .container.text-center {
-    text-decoration:underline;
-    font-size: larger;
-  }
-
-  /* This is used to style the buttons*/
-  .btn-primary {
-background-color: rgb(29, 86, 192);
-  }
-
-/* This is for search input*/
-.form-inline {
-  width: auto;
-  flex: 1 1 auto;
+/* left menu showing nearby places */
+#nearby-section {
   display: flex;
-  flex-wrap: nowrap;
+  flex-direction: column;
+  align-items: center;
+  border-right: 1px solid rgba(0, 0, 0, 0.125);
+  max-height: 860px;
+  overflow: scroll;
 }
 
-.form-control {
-  flex: 1 1 auto;
-}
+@media only screen and (max-width: 768px) {
+  /* allow the nearby places to show horizontally in the smaller screen*/
+  #nearby-section {
+    flex-direction: row;
+    gap: 10px;
+  }
 
-.button {
-  flex: 0 0 auto;
-}
+  .nearby-item {
+    height: 280px;
+    min-width: 16rem;
+  }
 
-.display-4 {
-  text-decoration: solid;
-}
-
-
-.h3 {
-  size: 20px;
-}
-
-/* This media query is used for smaller screen*/
-@media (max-width: 767px) {
-  .row {
-    width: 100%;
-    float: none;
-    display: block;
-    margin: 20px 0;
-    align-items: center;
+  .nearby-item__img {
+    height: 125px;
+    object-fit: cover;
   }
 }
 
-/*image for background*/
-body {
-  background: url('/assets/img/background.jpg') no-repeat center/cover;
+/* set style of nearby item on the left menu */
+.nearby-item {
+  margin-bottom: 8px;
+  width: 16rem;
 }
 
-/* This is to set width and height to entire html and body*/
-html, body {
-  width: 100%;
+/* set minimum width for place that is stored in the local storage */
+.history-item {
+  min-width: 20rem;
+}
+
+/* keep image aspect ratio for the place fetched from the local storage */
+.history-item__img {
+  height: 125px;
+  object-fit: cover;
+}
+
+/* info and map sections occupies half of the height */
+#info,
+#map {
+  flex: 0 1 50%;
+}
+
+/* diplay wikepidia and map in the column direction */
+#info-and-map {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   height: 100%;
-  margin: 0;
-  padding: 0;
 }
 
-/* This is for nearby section*/
-.nearby-section {
-overflow: auto;
-text-align: center;
-}
-
-.wiki {
-  width: 100%;
-  height: 100%;
-  align-items: center;
+footer {
+  flex: 0 1 auto;
 }
