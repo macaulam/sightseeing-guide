@@ -9,5 +9,7 @@ Incorporating Wikipedia and Google APIs, the website offers a wealth of informat
 
 Overall, our website provides a unique and valuable resource for individuals looking to learn more about the world around them, and to explore and appreciate the rich history and cultural heritage of various locations.
 
+Test our website here: https://macaulam.github.io/sightseeing-guide/
+
 
 
