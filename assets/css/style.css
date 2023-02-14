@@ -141,7 +141,7 @@ background-color: rgb(29, 86, 192);
 
 /*image for background*/
 body {
-  background: url('/assets/img/background\ PROJECT.jpg') no-repeat center/cover;
+  background: url('/assets/img/background.jpg') no-repeat center/cover;
 }
 
 /* This is to set width and height to entire html and body*/
