@@ -259,7 +259,7 @@ function placeOnClick(placeToFind, event) {
   // show wikipedia of the clicked item in iframe
   const url = $(event.currentTarget).attr("data-url");
   const infoHtml = url
-    ? `<iframe src="${url}">`
+    ? `<iframe class="wiki" src="${url}">`
     : "<p>Can't find the Wikipedia about this place</p>";
   $("#info").html(infoHtml);
 
