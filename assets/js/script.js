@@ -109,7 +109,9 @@ function showLocation(el) {
       map: map
     });
   } else {
-    $("#map").html("<p>This place can't be located in the map.</p>");
+    $("#map").html(
+      "<p class='text-light'>This place can't be located in the map.</p>"
+    );
     showModal(
       "Couldn't show this place",
       "The latitude and the longitude of the selected place can't be found. Please try again!"
@@ -191,7 +193,7 @@ function showLocalStorageHistory() {
     });
   } else {
     $("#recent-search").html(
-      "<h4 class='mt-2'>You haven't look at any places in recent.</h4>"
+      "<h4 class='text-light mt-2'>You haven't look at any places in recent.</h4>"
     );
   }
 }
@@ -249,10 +251,14 @@ async function showNearbyPlaces(lat, lng) {
       // add the HTML string to the nearby-section div
       $("#nearby-section").html(nearbyPlacesHTMLString);
     } else {
-      $("#nearby-section").html("<p>No nearby places found!</p>");
+      $("#nearby-section").html(
+        "<p class='text-light'>No nearby places found!</p>"
+      );
     }
   } else {
-    $("#nearby-section").html("<p>No nearby places found!</p>");
+    $("#nearby-section").html(
+      "<p class='text-light'>No nearby places found!</p>"
+    );
     showModal(
       "Couldn't find this place",
       "The latitude and the longitude of the place can't be found. Please try again!"
@@ -266,7 +272,7 @@ function placeOnClick(placeToFind, event) {
   const url = $(event.currentTarget).attr("data-url");
   const infoHtml = url
     ? `<iframe class="w-100 h-100" src="${url}">`
-    : "<p>Can't find the Wikipedia about this place</p>";
+    : "<p class='text-light'>Can't find the Wikipedia about this place</p>";
   $("#info").html(infoHtml);
 
   // show location of the clicked item in google map
