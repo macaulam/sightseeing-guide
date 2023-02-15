@@ -69,7 +69,7 @@ main {
   overflow: scroll;
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 767px) {
   /* allow the nearby places to show horizontally in the smaller screen*/
   #nearby-section {
     flex-direction: row;
