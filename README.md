@@ -13,4 +13,7 @@ Test our website here: https://macaulam.github.io/sightseeing-guide/
 
 <img src="/assets/img/demo2.png" alt="Alt text" title="Optional title">
 
+Presentation slides
+https://macaulam.github.io/sightseeing-guide/assets/presentation.pdf
+
 Demo image of the live webpage
