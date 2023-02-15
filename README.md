@@ -11,6 +11,6 @@ Overall, our website provides a unique and valuable resource for individuals loo
 
 Test our website here: https://macaulam.github.io/sightseeing-guide/
 
-<img src="/assets/img/demo1.png" alt="Alt text" title="Optional title">
+<img src="/assets/img/demo2.png" alt="Alt text" title="Optional title">
 
 Demo image of the live webpage
