@@ -121,3 +121,7 @@ main {
 footer {
   flex: 0 1 auto;
 }
+
+.nearby-places-header {
+  color: aliceblue;
+}
