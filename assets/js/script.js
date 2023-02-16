@@ -28,13 +28,13 @@ function initGoogleSearch() {
       } else {
         showModal(
           "No Places Found",
-          "No nearby places can't be found. Please try again!"
+          "No nearby places can be found. Please try again!"
         );
       }
     } else {
       showModal(
         "No Places Found",
-        "No nearby places can't be found. Please try again!"
+        "No nearby places can be found. Please try again!"
       );
     }
   });
